@@ -34,4 +34,28 @@ class CategoryTest extends TestCase
         self::assertNotNull($collection);
         self::assertCount(6, $collection);
     }
+
+    public function testManyCategoryInsert(): void
+    {
+        $categories = [];
+
+        for ($i = 1; $i <= 10; $i++) {
+            $categories[] = [
+                'id' => "Id-$i",
+                'name' => "Name-$i",
+            ];
+        }
+
+        // $result = Category::query()->insert($categories);
+        $result = Category::insert($categories);
+
+        self::assertTrue($result);
+
+        $result = Category::query()->count();
+        self::assertNotNull($result);
+        self::assertEquals(10, $result);
+
+        $collection = DB::table("categories")->select()->get();
+        self::assertCount(10, $collection);
+    }
 }
