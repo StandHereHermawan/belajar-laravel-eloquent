@@ -22,4 +22,27 @@ class CategorySeederTest extends TestCase
         $total = Category::count();
         self::assertEquals(0, $total);
     }
+
+    public function testManyDelete()
+    {
+        $categories = [];
+
+        for ($i = 1; $i < 11; $i++) {
+            $categories[] = [
+                'id' => "DUMMY-$i",
+                'name' => "Category dummy $i"
+            ];
+        }
+
+        $result = Category::query()->insert($categories);
+        self::assertTrue($result);
+
+        $total = Category::query()->count();
+        self::assertEquals(10, $total);
+
+        Category::query()->whereNull("description")->delete();
+
+        $total = Category::query()->count();
+        self::assertEquals(0, $total);
+    }
 }
