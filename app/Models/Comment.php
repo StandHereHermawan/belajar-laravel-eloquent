@@ -12,4 +12,9 @@ class Comment extends Model
     protected $keyType = "int";
     public $incrementing = true;
     public $timestamps = true; // default-nya adalah true
+
+    protected $attributes = [
+        'title' => 'Sample Title Default Value',
+        'comment' => 'Sample Comment Default Value'
+    ];
 }

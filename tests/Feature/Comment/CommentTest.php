@@ -69,4 +69,20 @@ class CommentTest extends TestCase
         self::assertEquals($commentResultsAgain->title, $commentResults->title);
         self::assertEquals($commentResultsAgain->comment, $commentResults->comment);
     }
+
+    function testDefaultAttributeValues(): void
+    {
+        $comment = new Comment();
+
+        $comment->email = "sample@belajar.gwejh";
+        $comment->created_at = new \DateTime();
+        $comment->updated_at = new \DateTime();
+        $comment->save();
+
+        self::assertNotNull($comment->id);
+
+        $result = Comment::find($comment->id);
+
+        self::assertEquals($comment->id, $result->id);
+    }
 }
