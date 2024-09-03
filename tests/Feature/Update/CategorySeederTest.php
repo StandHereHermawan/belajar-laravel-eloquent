@@ -30,4 +30,28 @@ class CategorySeederTest extends TestCase
         Log::info(json_encode($categoryUpdate));
         self::assertEquals($category->name, $categoryUpdate->name);
     }
+
+    function testManyUpdate()
+    {
+
+        $categories = [];
+
+        for ($i = 1; $i <= 10; $i++) {
+            # code...
+            $categories[] = [
+                'id' => "DUMMY-$i",
+                'name' => "Category dummy $i"
+            ];
+        }
+
+        $result = Category::query()->insert($categories);
+        self::assertTrue($result);
+
+        Category::query()->whereNull("description")->update([
+            'description' => "Dummy description updated"
+        ]);
+
+        $total = Category::query()->where("description", "=", "Dummy description updated")->count();
+        self::assertEquals(10, $total);
+    }
 }
