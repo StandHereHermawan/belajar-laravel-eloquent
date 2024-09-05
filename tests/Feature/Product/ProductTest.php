@@ -64,4 +64,21 @@ class ProductTest extends TestCase
         });
         self::assertEquals(5, $products->count());
     }
+
+    public function testHasOneOfMany()
+    {
+        $this->seed(CategorySeeder::class);
+        $this->seed(ProductSeeder::class);
+
+        $category = Category::query()->find("FOOD");
+
+        $cheapestProduct = $category->cheapestProduct;
+
+        self::assertNotNull($cheapestProduct);
+        self::assertEquals("PRODUCT-DUMMY-1", $cheapestProduct->id);
+
+        $mostExpensiveProduct = $category->mostExpensiveProducts;
+        self::assertNotNull($mostExpensiveProduct);
+        self::assertEquals("PRODUCT-DUMMY-5", $mostExpensiveProduct->id);
+    }
 }
