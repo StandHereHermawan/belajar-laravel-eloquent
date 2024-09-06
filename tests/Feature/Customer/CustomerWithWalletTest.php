@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\CustomerSeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\ReviewSeeder;
 use Database\Seeders\VirtualAccountSeeder;
 use Database\Seeders\WalletSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -88,5 +89,24 @@ class CustomerWithWalletTest extends TestCase
         Log::info(json_encode($virtualAccount));
         self::assertNotNull($virtualAccount);
         self::assertEquals("BCA", $virtualAccount->bank);
+    }
+
+    public function testHasManyThrough(): void
+    {
+        self::seed([CategorySeeder::class, ProductSeeder::class, CustomerSeeder::class, ReviewSeeder::class]);
+
+        $category = Category::query()->find("FOOD");
+        self::assertNotNull($category);
+        Log::info(json_encode($category));
+
+        $reviews = $category->reviews;
+        self::assertNotNull($reviews);
+
+        $reviews->each(function ($review) {
+            self::assertNotNull($review);
+            Log::info(json_encode($review));
+        });
+
+        self::assertCount(3, $reviews);
     }
 }
