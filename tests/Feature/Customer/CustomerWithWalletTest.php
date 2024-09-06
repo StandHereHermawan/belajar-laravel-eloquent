@@ -109,4 +109,55 @@ class CustomerWithWalletTest extends TestCase
 
         self::assertCount(3, $reviews);
     }
+
+    public function testManyToMany(): void
+    {
+        self::seed([CustomerSeeder::class, CategorySeeder::class, ProductSeeder::class]);
+
+        $customer = Customer::query()->find("SAMPLE");
+        $customer->likeProducts()->attach("PRODUCT-DUMMY-1"); // attach productId
+
+        for ($index = 2; $index <= 4; $index++) {
+            $customer->likeProducts()->attach("PRODUCT-DUMMY-$index"); // attach productId
+        }
+
+        self::assertNotNull($customer);
+    }
+
+    public function testQueryManyToMany(): void
+    {
+        $this->testManyToMany();
+
+        $customer = Customer::query()->find("SAMPLE");
+        self::assertNotNull($customer);
+        Log::info($customer);
+
+        $products = $customer->likeProducts;
+        self::assertNotNull($products);
+        Log::info($products);
+
+        self::assertCount(4, $products);
+        self::assertEquals("PRODUCT-DUMMY-1", $products[0]->id);
+        self::assertEquals("Product-1", $products[0]->name);
+
+        $products->each(function ($product) {
+            Log::info(json_encode($product));
+        });
+    }
+
+    public function testRemoveManyToManyRelation(): void {
+        $this->testQueryManyToMany();
+
+        $customer = Customer::query()->find("SAMPLE");
+        $customer->likeProducts()->detach("PRODUCT-DUMMY-2"); // detach productId
+
+        $products = $customer->likeProducts;
+
+        self::assertNotNull($products);
+        self::assertCount(3, $products);
+
+        $products->each(function ($product) {
+            Log::info(json_encode($product));
+        });
+    }
 }
