@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\CustomerSeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\VirtualAccountSeeder;
 use Database\Seeders\WalletSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -73,5 +74,19 @@ class CustomerWithWalletTest extends TestCase
             self::assertNotNull($product);
             Log::info(json_encode($product));
         });
+    }
+
+    public function testHasOneThrough(): void
+    {
+        self::seed([CustomerSeeder::class, WalletSeeder::class, VirtualAccountSeeder::class]);
+
+        $customer = Customer::query()->find("SAMPLE");
+        self::assertNotNull($customer);
+        Log::info(json_encode($customer));
+
+        $virtualAccount = $customer->virtualAccount;
+        Log::info(json_encode($virtualAccount));
+        self::assertNotNull($virtualAccount);
+        self::assertEquals("BCA", $virtualAccount->bank);
     }
 }
