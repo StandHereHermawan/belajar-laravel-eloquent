@@ -145,7 +145,8 @@ class CustomerWithWalletTest extends TestCase
         });
     }
 
-    public function testRemoveManyToManyRelation(): void {
+    public function testRemoveManyToManyRelation(): void
+    {
         $this->testQueryManyToMany();
 
         $customer = Customer::query()->find("SAMPLE");
@@ -161,7 +162,7 @@ class CustomerWithWalletTest extends TestCase
         });
     }
 
-    public function testPivotAttribute(): void 
+    public function testPivotAttribute(): void
     {
         self::testQueryManyToMany();
 
@@ -180,7 +181,7 @@ class CustomerWithWalletTest extends TestCase
         }
     }
 
-    public function testConditionOnPivotAttribute(): void 
+    public function testConditionOnPivotAttribute(): void
     {
         self::testQueryManyToMany();
 
@@ -196,6 +197,38 @@ class CustomerWithWalletTest extends TestCase
             self::assertNotNull($pivot->created_at);
 
             Log::info(json_encode($pivot));
+        }
+    }
+
+    public function testPivotModel(): void
+    {
+        $this->testQueryManyToMany();
+
+        $customer = Customer::query()->find("SAMPLE");
+        $products = $customer->likeProducts;
+
+        foreach ($products as $product) {
+
+            Log::info(json_encode(null));
+
+            $pivot = $product->pivot;
+            self::assertNotNull($pivot);
+
+            self::assertNotNull($pivot->customer_id);
+            self::assertNotNull($pivot->product_id);
+            self::assertNotNull($pivot->created_at);
+
+            Log::info(json_encode($pivot));
+
+            $customer = $pivot->customer;
+            self::assertNotNull($customer);
+            Log::info(json_encode($customer));
+
+            $product = $pivot->product;
+            self::assertNotNull($product);
+            Log::info(json_encode($product));
+
+            Log::info(json_encode(null));
         }
     }
 }
