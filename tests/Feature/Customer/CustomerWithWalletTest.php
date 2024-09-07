@@ -4,9 +4,11 @@ namespace Tests\Feature\Customer;
 
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\Wallet;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\CustomerSeeder;
+use Database\Seeders\ImageSeeder;
 use Database\Seeders\ProductSeeder;
 use Database\Seeders\ReviewSeeder;
 use Database\Seeders\VirtualAccountSeeder;
@@ -230,5 +232,19 @@ class CustomerWithWalletTest extends TestCase
 
             Log::info(json_encode(null));
         }
+    }
+
+    public function testOneToOnePolymorphism(): void
+    {
+        self::seed([CustomerSeeder::class, ImageSeeder::class]);
+
+        $customer = Customer::query()->find("SAMPLE");
+        self::assertNotNull($customer);
+        Log::info(json_encode($customer));
+
+        $image = $customer->image;
+        self::assertNotNull($image);
+        self::assertEquals("https://www.programmerzamannow.com/images/1.jpg", $image->url);
+        Log::info(json_encode($customer));
     }
 }
