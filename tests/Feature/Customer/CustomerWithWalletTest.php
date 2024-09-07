@@ -160,4 +160,42 @@ class CustomerWithWalletTest extends TestCase
             Log::info(json_encode($product));
         });
     }
+
+    public function testPivotAttribute(): void 
+    {
+        self::testQueryManyToMany();
+
+        $customer = Customer::query()->find("SAMPLE");
+        $products = $customer->likeProducts;
+
+        foreach ($products as $product) {
+            $pivot = $product->pivot;
+
+            self::assertNotNull($pivot);
+            self::assertNotNull($pivot->customer_id);
+            self::assertNotNull($pivot->product_id);
+            self::assertNotNull($pivot->created_at);
+
+            Log::info(json_encode($pivot));
+        }
+    }
+
+    public function testConditionOnPivotAttribute(): void 
+    {
+        self::testQueryManyToMany();
+
+        $customer = Customer::query()->find("SAMPLE");
+        $products = $customer->likeProductsLastWeek;
+
+        foreach ($products as $product) {
+            $pivot = $product->pivot;
+
+            self::assertNotNull($pivot);
+            self::assertNotNull($pivot->customer_id);
+            self::assertNotNull($pivot->product_id);
+            self::assertNotNull($pivot->created_at);
+
+            Log::info(json_encode($pivot));
+        }
+    }
 }

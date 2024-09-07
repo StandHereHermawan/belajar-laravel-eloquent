@@ -11,3 +11,5 @@ select * from vouchers;
 select * from comments;
 
 desc comments;
+
+select * from customers_likes_products;
