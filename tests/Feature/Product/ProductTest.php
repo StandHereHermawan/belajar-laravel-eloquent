@@ -119,4 +119,25 @@ class ProductTest extends TestCase
             Log::info("=========");
         }
     }
+
+    public function testOneOfManyPolymorphic(): void
+    {
+        self::seed([CategorySeeder::class, ProductSeeder::class, VoucherSeeder::class, CommentSeeder::class]);
+
+        Log::info(json_encode("===== START SECTION ====="));
+
+        $product = Product::query()->first();
+        self::assertNotNull($product);
+        Log::info(json_encode($product));
+
+        $latestComment = $product->latestComment;
+        self::assertNotNull($latestComment);
+        Log::info(json_encode($latestComment));
+
+        $oldestComment = $product->oldestComment;
+        self::assertNotNull($oldestComment);
+        Log::info(json_encode($oldestComment));
+
+        Log::info(json_encode("===== END SECTION ====="));
+    }
 }
