@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
 {
@@ -17,4 +18,9 @@ class Comment extends Model
         'title' => 'Sample Title Default Value',
         'comment' => 'Sample Comment Default Value'
     ];
+
+    public function commentable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

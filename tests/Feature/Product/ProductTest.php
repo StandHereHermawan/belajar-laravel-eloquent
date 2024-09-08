@@ -5,8 +5,10 @@ namespace Tests\Feature\Product;
 use App\Models\Category;
 use App\Models\Product;
 use Database\Seeders\CategorySeeder;
+use Database\Seeders\CommentSeeder;
 use Database\Seeders\ImageSeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\VoucherSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Log;
@@ -95,5 +97,26 @@ class ProductTest extends TestCase
         self::assertNotNull($image);
         self::assertEquals("https://www.programmerzamannow.com/images/2.jpg", $image->url);
         Log::info(json_encode($image));
+    }
+
+    public function testOneToManyPolymorphic(): void
+    {
+        self::seed([CategorySeeder::class, ProductSeeder::class, VoucherSeeder::class, CommentSeeder::class]);
+
+        $product = Product::query()->first();
+        self::assertNotNull($product);
+
+        $comments = $product->comments;
+        self::assertNotNull($comments);
+        self::assertCount(1, $comments);
+
+        foreach ($comments as $comment) {
+            self::assertNotNull($comment);
+            self::assertEquals(Product::class, $comment->commentable_type);
+            self::assertEquals($product->id, $comment->commentable_id);
+            Log::info("=========");
+            Log::info(json_encode($comment));
+            Log::info("=========");
+        }
     }
 }
