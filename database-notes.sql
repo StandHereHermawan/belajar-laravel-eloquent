@@ -13,3 +13,5 @@ select * from comments;
 desc comments;
 
 select * from customers_likes_products;
+
+select * from images;

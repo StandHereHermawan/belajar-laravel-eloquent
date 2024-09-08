@@ -21,7 +21,7 @@ class CommentSeeder extends Seeder
         $comment->title = "Example Title 1";
         $comment->comment = "Example Comments on Product $product->id";
         $comment->commentable_id = $product->id;
-        $comment->commentable_type = Product::class;
+        $comment->commentable_type = 'product';
         $comment->save();
 
         $voucher = Voucher::query()->first();
@@ -30,7 +30,7 @@ class CommentSeeder extends Seeder
         $comment2->title = "Example Title 2";
         $comment2->comment = "Example Comments on Voucher $voucher->id";
         $comment2->commentable_id = $voucher->id;
-        $comment2->commentable_type = Voucher::class;
+        $comment2->commentable_type = "voucher";
         $comment2->save();
     }
 }
