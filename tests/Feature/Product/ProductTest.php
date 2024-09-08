@@ -8,6 +8,7 @@ use Database\Seeders\CategorySeeder;
 use Database\Seeders\CommentSeeder;
 use Database\Seeders\ImageSeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\TagSeeder;
 use Database\Seeders\VoucherSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -139,5 +140,40 @@ class ProductTest extends TestCase
         Log::info(json_encode($oldestComment));
 
         Log::info(json_encode("===== END SECTION ====="));
+    }
+
+    public function testManyToManyPolymorphic(): void
+    {
+        self::seed([
+            CategorySeeder::class,
+            ProductSeeder::class,
+            VoucherSeeder::class,
+            TagSeeder::class
+        ]);
+
+        Log::info(json_encode("==== START SECTION ===="));
+
+        $product = Product::query()->first();
+        self::assertNotNull($product);
+        Log::info(json_encode($product));
+
+        $tags = $product->tags;
+        self::assertNotNull($product);
+        self::assertCount(1, $tags);
+        Log::info(json_encode($tags));
+
+        foreach ($tags as $tag) {
+            self::assertNotNull($tag);
+            self::assertNotNull($tag->id);
+            self::assertNotNull($tag->name);
+            Log::info(json_encode($tag));
+
+            $vouchers = $tag->vouchers;
+            self::assertNotNull($vouchers);
+            self::assertCount(1, $vouchers);
+            Log::info(json_encode($vouchers));
+        }
+
+        Log::info(json_encode("==== END SECTION ===="));
     }
 }
