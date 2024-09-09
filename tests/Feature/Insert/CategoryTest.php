@@ -3,9 +3,12 @@
 namespace Tests\Feature\Insert;
 
 use App\Models\Category;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -57,5 +60,19 @@ class CategoryTest extends TestCase
 
         $collection = DB::table("categories")->select()->get();
         self::assertCount(10, $collection);
+    }
+
+    public function testQueryingRelations(): void
+    {
+        self::seed([CategorySeeder::class, ProductSeeder::class]);
+
+        $category = Category::query()->find("FOOD");
+        $products = $category->products()->where('price', '<=', 7000)->get();
+
+        self::assertNotNull($products);
+        self::assertCount(3, $products);
+        $products->each(function ($product) {
+            Log::info(json_encode($product));
+        });
     }
 }
