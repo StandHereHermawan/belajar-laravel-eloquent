@@ -176,4 +176,23 @@ class ProductTest extends TestCase
 
         Log::info(json_encode("==== END SECTION ===="));
     }
+
+    public function testEloquentCollection(): void
+    {
+        self::seed([CategorySeeder::class, ProductSeeder::class]);
+
+        $products = Product::query()->get();
+        self::assertNotNull($products);
+        self::assertCount(5, $products);
+        $products->each(function ($product) {
+            Log::info(json_encode($product));
+        });
+
+        $products = $products->toQuery()->where('price', '>=', 9000)->get();
+        self::assertNotNull($products);
+        self::assertCount(1, $products);
+        $products->each(function ($product) {
+            Log::info(json_encode($product));
+        });
+    }
 }
