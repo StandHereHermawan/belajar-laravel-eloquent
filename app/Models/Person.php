@@ -15,6 +15,10 @@ class Person extends Model
     protected $keyType = 'int';
     public $incrementing = true;
     public $timestamps = true;
+    protected $casts = [
+        'created_at' => 'datetime',
+        "updated_at" => 'datetime',
+    ];
 
     protected function fullName(): Attribute
     {
