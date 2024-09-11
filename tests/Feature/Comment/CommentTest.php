@@ -21,6 +21,8 @@ class CommentTest extends TestCase
     {
         $comment = new Comment();
 
+        $comment->commentable_id = "1";
+        $comment->commentable_type = "product";
         $comment->email = "example@proton.com";
         $comment->title = "Sample Title";
         $comment->comment = "Sample Comments";
@@ -41,7 +43,9 @@ class CommentTest extends TestCase
     function testUpdateComment(): void
     {
         $comment = new Comment();
-
+        
+        $comment->commentable_id = "1";
+        $comment->commentable_type = "product";
         $comment->email = "example@proton.com";
         $comment->title = "Sample Title";
         $comment->comment = "Sample Comments";
@@ -55,7 +59,7 @@ class CommentTest extends TestCase
         $commentResults->title = "Sample Title Updated";
         $commentResults->comment = "Sample Comments Updated";
 
-        for ($i = 0; $i < 1000000; $i++) {
+        for ($i = 0; $i < 100000; $i++) {
             # code...
             Log::info(json_encode("Wait list $i"));
         }
@@ -74,6 +78,8 @@ class CommentTest extends TestCase
     {
         $comment = new Comment();
 
+        $comment->commentable_id = "1";
+        $comment->commentable_type = "product";
         $comment->email = "sample@belajar.gwejh";
         $comment->created_at = new \DateTime();
         $comment->updated_at = new \DateTime();

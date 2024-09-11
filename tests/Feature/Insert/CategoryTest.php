@@ -27,6 +27,7 @@ class CategoryTest extends TestCase
             $category = new Category();
 
             $category->id = "DUMMY-" . ($i + 1);
+
             $category->name = "Category dummy " . ($i + 1);
 
             $result = $category->save();
@@ -45,6 +46,7 @@ class CategoryTest extends TestCase
         for ($i = 1; $i <= 10; $i++) {
             $categories[] = [
                 'id' => "Id-$i",
+                'is_active' => true,
                 'name' => "Name-$i",
             ];
         }

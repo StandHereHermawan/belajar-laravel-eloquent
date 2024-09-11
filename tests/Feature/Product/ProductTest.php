@@ -48,7 +48,7 @@ class ProductTest extends TestCase
         self::assertNotNull($product);
         Log::info($product);
 
-        $category = $product->products;
+        $category = $product->categories;
 
         self::assertNotNull($category);
         Log::info($category);
@@ -113,7 +113,8 @@ class ProductTest extends TestCase
 
         foreach ($comments as $comment) {
             self::assertNotNull($comment);
-            self::assertEquals(Product::class, $comment->commentable_type);
+            // self::assertEquals(Product::class, $comment->commentable_type);
+            self::assertEquals('product', $comment->commentable_type);
             self::assertEquals($product->id, $comment->commentable_id);
             Log::info("=========");
             Log::info(json_encode($comment));

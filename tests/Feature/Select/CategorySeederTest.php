@@ -18,6 +18,7 @@ class CategorySeederTest extends TestCase
             $category = new Category();
             $category->id = "DUMMY-$i";
             $category->name = "Category dummy $i";
+            $category->is_active = true;
             $category->save();
         }
 

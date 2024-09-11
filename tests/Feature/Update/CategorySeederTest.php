@@ -40,7 +40,8 @@ class CategorySeederTest extends TestCase
             # code...
             $categories[] = [
                 'id' => "DUMMY-$i",
-                'name' => "Category dummy $i"
+                'name' => "Category dummy $i",
+                'is_active' => true
             ];
         }
 
