@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Address;
 use App\Models\Person;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,12 +18,17 @@ class PersonSeeder extends Seeder
         $person->id = "1";
         $person->first_name = "Arief";
         $person->last_name = "Hermawan";
+
+        $address = new Address("Jalan belum jadi", "Kabupaten Bandung", "Indonesia", "40394");
+
+        $person->address = $address;
         $person->save();
 
         $person = new Person();
         $person->id = "2";
         $person->first_name = "Hilmi";
         $person->last_name = "Muharrom";
+        $person->address = new Address("Jalan belum jadi", "Kota Bogor", "Indonesia", "12345");
         $person->save();
 
         $person = new Person();
