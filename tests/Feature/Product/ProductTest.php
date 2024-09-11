@@ -195,4 +195,37 @@ class ProductTest extends TestCase
             Log::info(json_encode($product));
         });
     }
+
+    public function testToJSONSerialization(): void
+    {
+        self::seed([CategorySeeder::class, ProductSeeder::class]);
+
+        $products = Product::query()->get();
+        self::assertCount(5, $products);
+
+        $json = $products->toJson(JSON_PRETTY_PRINT);
+        Log::info($json);
+    }
+
+    public function testRelationInSerialization(): void
+    {
+        self::seed([
+            CategorySeeder::class,
+            ProductSeeder::class,
+            ImageSeeder::class,
+            VoucherSeeder::class,
+            CommentSeeder::class
+        ]);
+
+        $products = Product::query()->get();
+        $products->load("categories");
+        $products->load("image");
+        $products->load("comments");
+
+        self::assertNotNull($products);
+        self::assertCount(5, $products);
+
+        $json = $products->toJson(JSON_PRETTY_PRINT);
+        Log::info($json);
+    }
 }
